@@ -111,3 +111,48 @@ function kambrium.get_wp_plugin_metadata() {
   # restore the value of allexport option to its original value.
   eval "$CURRENT_ALLEXPORT_STATE" >/dev/null
 }
+
+#
+# generates the readme.txt file in the dist folder of a wordpress plugin
+# based on the plugin specific template or the default readme.txt template (if not present)
+#
+# if the plugin doesnt provide any screenshots they will be copied from the default template
+# (./node_modules/@pnpmkambrium/core/presets/default/wp-plugin)
+#
+# example:
+#   kambrium.wp_plugin_dist_readme_txt "cm4all-wp-impex"
+#
+# @param $1 the plugin name
+#
+function kambrium.wp_plugin_dist_readme_txt() {
+  local plugin_name=$1
+  local plugin_path="packages/wp-plugin/$plugin_name"
+  local readme_txt="$plugin_path/dist/$plugin_name/readme.txt"
+
+  VARIABLES=$(kambrium.get_wp_plugin_metadata packages/wp-plugin/$1)
+
+  # prefer plugin specific readme.txt over default fallback
+  if [[ -f "$plugin_path/readme.txt1" ]]; then
+    README_TXT="$plugin_path/readme.txt"
+  else
+    README_TXT='./node_modules/@pnpmkambrium/core/presets/default/wp-plugin/readme.txt'
+
+    # copy dummy screenshots/icon to dist directory
+    # generate dummy images:
+    #    screenshot-1.png: convert -size 640x480 +delete xc:white -background lightgrey -fill gray -pointsize 24 -gravity center label:'Screenshot-1' ./screenshot-1.png
+    #    banner-772x250.png: convert -size 772x250 +delete xc:white -background lightgrey -fill gray -pointsize 24 -gravity center label:'Banner 772 x 250 px' ./banner-772x250.png
+    #    banner-1544x500.png: convert -size 1544x500 +delete xc:white -background lightgrey -fill gray -pointsize 24 -gravity center label:'Banner 1544 x 500 px' ./banner-1544x500.png
+    find ./node_modules/@pnpmkambrium/core/presets/default/wp-plugin \
+      -maxdepth 1 \
+      -type f \
+      \( -name "*.png" -o -name "*.jpeg" -o -name "*.jpg" -o -name "*.gif" -o -name "icon.svg" \) \
+      -print0 \
+    | xargs -0 -I {} cp -v {} $plugin_path/dist/$plugin_name/
+  fi
+
+  # convert variables list into envsubst compatible form
+  VARIABLES=$(echo "$VARIABLES" | sed 's/.*/$${&}/')
+
+  # process readme.txt and write output to dist/readme.txt
+  envsubst "$VARIABLES" < "$README_TXT" > $readme_txt
+}

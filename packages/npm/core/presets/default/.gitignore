@@ -21,5 +21,4 @@ vendor
 **/languages/*.json
 /wp-env-home/
 /.wp-env.json
-/wp-cli.wp-env.yml
 /.vscode/launch.json

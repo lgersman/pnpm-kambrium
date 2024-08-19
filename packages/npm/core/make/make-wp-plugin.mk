@@ -31,10 +31,8 @@ packages/wp-plugin/%/: $(KAMBRIUM_SUB_PACKAGE_DEPS) ;
 #
 # we utilize file "build-info" to track if the wordpress plugin was build/is up to date
 packages/wp-plugin/%/build-info: $$(filter-out $$(wildcard $$(@D)/languages/*.po $$(@D)/languages/*.mo $$(@D)/languages/*.json $$(@D)/languages/*.pot), $(KAMBRIUM_SUB_PACKAGE_BUILD_INFO_DEPS)) $$(@D)/vendor/autoload.php
-> # inject sub package environments from {.env,.secrets} files
-> kambrium.load_env $(@D)
-> PACKAGE_JSON=$(@D)/package.json
-> PACKAGE_VERSION=$$(jq -r '.version | values' $$PACKAGE_JSON)
+> # inject sub package environments from {.env,.secrets} files and plugin metadata from package.json
+> kambrium.get_wp_plugin_metadata $(@D) &>/dev/null
 > rm -rf $(@D)/{dist,build,build-info}
 > $(PNPM) -r --filter "$$(jq -r '.name | values' $$PACKAGE_JSON)" --if-present run pre-build
 > if jq --exit-status '.scripts | has("build")' $$PACKAGE_JSON >/dev/null; then
@@ -91,7 +89,7 @@ packages/wp-plugin/%/build-info: $$(filter-out $$(wildcard $$(@D)/languages/*.po
 # > find $(@D)/dist/$* -executable -name "*.kambrium-template" | xargs -L1 -I{} make $$(basename "{}")
 # > find $(@D)/dist/$* -name "*.kambrium-template" -exec rm -v -- {} +
 > # generate/update readme.txt
-> $(MAKE) $(@D)/dist/$*/readme.txt
+> kambrium.wp_plugin_dist_readme_txt "$*"
 # > [[ -d '$(@D)/build' ]] || (echo "don't unable to archive build directory(='$(@D)/build') : directory does not exist" >&2 && false)
 # > find $(@D)/build -name "*.kambrium-template" -exec rm -v -- {} \;
 # > # redirecting into the target zip archive frees us from removing an existing archive first
@@ -229,31 +227,6 @@ packages/wp-plugin/%.po : $$(shell kambrium.get_pot_path $$(@))
 
 packages/wp-plugin/%/build/block.json: packages/wp-plugin/%/src/block.json
 > cp $< $@
-
-# PLUGIN_SUBPACKAGE_RULE_TEMPLATE is used to create a rule for each wp-{theme,plugin}/*/dist/*/readme.txt file
-DOLLAR := $
-define PLUGIN_SUBPACKAGE_RULE_TEMPLATE =
-# helper target generating/updating dist/readme.txt
-packages/$(1)/dist/$(notdir $(1))/readme.txt: $(wildcard packages/$(1)/readme.txt) packages/$(1)/package.json package.json $(wildcard .env packages/$(dir $(1)).env)
-> kambrium.get_wp_plugin_metadata '$$@' >$$(KAMBRIUM_TMPDIR)/wp_plugin_readme_txt_variables
-> # prefer plugin specific readme.txt over default fallback
-> if [[ -f "packages/$(1)/readme.txt" ]]; then
->   README_TXT="packages/$(1)/readme.txt"
-> else
->   README_TXT='./node_modules/@pnpmkambrium/core/presets/default/wp-plugin/readme.txt'
->   # copy dummy screenshots/icon to dist directory
->   # generate dummy images:
->   #    screenshot-1.png: convert -size 640x480 +delete xc:white -background lightgrey -fill gray -pointsize 24 -gravity center label:'Screenshot-1' ./screenshot-1.png
->   #    banner-772x250.png: convert -size 772x250 +delete xc:white -background lightgrey -fill gray -pointsize 24 -gravity center label:'Banner 772 x 250 px' ./banner-772x250.png
->   #    banner-1544x500.png: convert -size 1544x500 +delete xc:white -background lightgrey -fill gray -pointsize 24 -gravity center label:'Banner 1544 x 500 px' ./banner-1544x500.png
->   cp ./node_modules/@pnpmkambrium/core/presets/default/wp-plugin/{*.png,icon.svg} $$(@D)
-> fi
-> # convert variables list into envsubst compatible form
-> VARIABLES=$$$$(cat $$(KAMBRIUM_TMPDIR)/wp_plugin_readme_txt_variables | sed 's/.*/$$$${&}/')
-> # process readme.txt and write output to dist/readme.txt
-> envsubst "$(DOLLAR)$(DOLLAR)VARIABLES" < "$(DOLLAR)$(DOLLAR)README_TXT" > $$@
-endef
-$(foreach wp_sub_package, $(filter wp-plugin/% wp-theme/%,$(KAMBRIUM_SUB_PACKAGE_PATHS)), $(eval $(call PLUGIN_SUBPACKAGE_RULE_TEMPLATE,$(wp_sub_package))))
 
 # HELP<<EOF
 # create or update a i18n mo file in a wordpress sub package (`packages/wp-plugin/*`)
