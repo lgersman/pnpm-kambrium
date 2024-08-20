@@ -1,8 +1,8 @@
 # lint related targets
 
 LINT_IGNORE_PATH := $(shell test -f $(CURDIR)/.lintignore && echo "$(CURDIR)/.lintignore" || echo "$(CURDIR)/node_modules/@pnpmkambrium/core/presets/default/.lintignore")
-PRETTIER := $(PNPM) prettier --config "$(shell test -f $(CURDIR)/.prettierrc.js && echo "$(CURDIR)/.prettierrc.js" || echo '$(CURDIR)/node_modules/@pnpmkambrium/core/presets/default/.prettierrc.js')" --ignore-path $(LINT_IGNORE_PATH) --cache --check --log-level silent
-ESLINT := ESLINT_USE_FLAT_CONFIG=false $(PNPM) eslint --quiet --config "$(shell test -f $(CURDIR)/.eslintrc.yaml && echo "$(CURDIR)/.eslintrc.yaml" || echo '$(CURDIR)/node_modules/@pnpmkambrium/core/presets/default/.eslintrc.yaml')" --ignore-path $(LINT_IGNORE_PATH) --no-error-on-unmatched-pattern
+PRETTIER := $(PNPM) exec prettier --config "$(shell test -f $(CURDIR)/.prettierrc.js && echo "$(CURDIR)/.prettierrc.js" || echo '$(CURDIR)/node_modules/@pnpmkambrium/core/presets/default/.prettierrc.js')" --ignore-path $(LINT_IGNORE_PATH) --cache --check --log-level silent
+ESLINT := ESLINT_USE_FLAT_CONFIG=false $(PNPM) exec eslint --quiet --config "$(shell test -f $(CURDIR)/.eslintrc.yaml && echo "$(CURDIR)/.eslintrc.yaml" || echo '$(CURDIR)/node_modules/@pnpmkambrium/core/presets/default/.eslintrc.yaml')" --ignore-path $(LINT_IGNORE_PATH) --no-error-on-unmatched-pattern
 STYLELINT := $(PNPM) exec stylelint --quiet --config "$(shell test -f $(CURDIR)/.stylelintrc.yml && echo "$(CURDIR)/.stylelintrc.yml" || echo '$(CURDIR)/node_modules/@pnpmkambrium/core/presets/default/.stylelintrc.yml')" --ignore-path=$(LINT_IGNORE_PATH) --allow-empty-input
 
 # HELP<<EOF
