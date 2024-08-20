@@ -31,8 +31,9 @@ ignorePatterns:
   - '*.json'
   - '*.code-workspace'
 rules:
+  # we disable everything that prettier can handle
   prettier/prettier:
-    - error
+    - 0
   # checks rules of Hooks
   react-hooks/rules-of-hooks:
     - error
@@ -52,7 +53,7 @@ parserOptions:
     jsx: true
 settings:
   react:
-    version: detect
+    version: 'detect'
 env:
   shared-node-browser: true
   browser: true

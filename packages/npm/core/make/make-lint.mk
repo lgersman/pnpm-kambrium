@@ -1,10 +1,9 @@
 # lint related targets
 
-# always run prettier using ignored files from .lintignore
-PRETTIER := $(PNPM) prettier --ignore-path='$(CURDIR)/.lintignore' --cache --check
-
-# always run eslint using ignored files from .lintignore
-ESLINT := $(PNPM) eslint --ignore-path='$(CURDIR)/.lintignore' --no-error-on-unmatched-pattern
+LINT_IGNORE_PATH := $(shell test -f $(CURDIR)/.lintignore && echo "$(CURDIR)/.lintignore" || echo "$(CURDIR)/node_modules/@pnpmkambrium/core/presets/default/.lintignore")
+PRETTIER := $(PNPM) prettier --config "$(shell test -f $(CURDIR)/.prettierrc.js && echo "$(CURDIR)/.prettierrc.js" || echo '$(CURDIR)/node_modules/@pnpmkambrium/core/presets/default/.prettierrc.js')" --ignore-path $(LINT_IGNORE_PATH) --cache --check --log-level silent
+ESLINT := ESLINT_USE_FLAT_CONFIG=false $(PNPM) eslint --quiet --config "$(shell test -f $(CURDIR)/.eslintrc.yaml && echo "$(CURDIR)/.eslintrc.yaml" || echo '$(CURDIR)/node_modules/@pnpmkambrium/core/presets/default/.eslintrc.yaml')" --ignore-path $(LINT_IGNORE_PATH) --no-error-on-unmatched-pattern
+STYLELINT := $(PNPM) exec stylelint --quiet --config "$(shell test -f $(CURDIR)/.stylelintrc.yml && echo "$(CURDIR)/.stylelintrc.yml" || echo '$(CURDIR)/node_modules/@pnpmkambrium/core/presets/default/.stylelintrc.yml')" --ignore-path=$(LINT_IGNORE_PATH) --allow-empty-input
 
 # HELP<<EOF
 # lint sources
@@ -12,10 +11,10 @@ ESLINT := $(PNPM) eslint --ignore-path='$(CURDIR)/.lintignore' --no-error-on-unm
 .PHONY: lint
 lint: node_modules/
 > pnpm run -r --if-present lint
-> $(PRETTIER) --ignore-unknown .
+> # prettier will exit with 1 if there are any fixable errors
+> $(PRETTIER) --ignore-unknown . ||:
 > $(ESLINT) .
-> ! (command -v $$($(PNPM) bin)/stylelint >/dev/null) || \
->   $(PNPM) stylelint --ignore-path='$(CURDIR)/.lintignore' --allow-empty-input ./packages/**/*.{css,scss}
+> test command -v $$($(PNPM) bin)/stylelint &>/dev/null && $(STYLELINT) ./packages/**/*.{css,scss}
 > {
 >   echo "Checking for unwanted tabs in makefiles..."
 >   ! git --no-pager grep --no-color --no-exclude-standard --untracked --no-recurse-submodules -n $$'\t' Makefile **/*.mk \
@@ -29,14 +28,15 @@ lint: node_modules/
 .PHONY: lint-fix
 lint-fix: node_modules/
 > pnpm run -r --if-present lint-fix
-> $(PRETTIER) --cache --check --write .
+> # prettier will exit with 1 if there are any fixable errors
+> $(PRETTIER) --write . ||:
 > $(ESLINT) --fix .
-> ! (command -v $$($(PNPM) bin)/stylelint >/dev/null) || \
->   $(PNPM) stylelint --ignore-path='$(CURDIR)/.lintignore' --allow-empty-input --fix ./packages/**/*.{css,scss}
+> test command -v $$($(PNPM) bin)/stylelint &>/dev/null && $(STYLELINT) --fix ./packages/**/*.{css,scss}
 > # lint-fix make files (poor mans edition): replace tabs with 2 spaces
 > (git --no-pager grep --no-color --no-exclude-standard --untracked --no-recurse-submodules -nH --name-only $$'\t' Makefile **/*.mk \
 >   | xargs -I '{}' -r bash -c \
 >   ' \
 >     sed -i -e "s/\t/  /g" {}; \
->     printf "[done] fixed makefile(=%s) : replaced tabs with 2 spaces\n" {} \
->   ')||:
+>     printf "fixed makefile(=%s) : replaced tabs with 2 spaces\n" {} \
+> ') ||:
+> kambrium.log_done

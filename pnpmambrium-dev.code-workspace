@@ -1,10 +1,17 @@
 {
   "folders": [
     {
-      "path": "./../pnpmkambrium-demo-monorepo"
+      "path": "./../pnpmkambrium-demo-monorepo",
     },
     {
-      "path": "."
-    }
-  ]
+      "path": ".",
+    },
+  ],
+  "settings": {
+    "eslint.lintTask.options": "--config ./node_modules/@pnpmkambrium/core/presets/default/.eslintrc.yaml --ignore-path ./node_modules/@pnpmkambrium/core/presets/default/.lintignore .",
+    "stylelint.configFile": "./node_modules/@pnpmkambrium/core/presets/default/.stylelintrc.yml",
+    "stylelint.ignorePath": "./node_modules/@pnpmkambrium/core/presets/default/.lintignore",
+    "prettier.configPath": "./node_modules/@pnpmkambrium/core/presets/default/.prettierrc.js",
+    "prettier.ignorePath": "./node_modules/@pnpmkambrium/core/presets/default/.lintignore",
+  },
 }

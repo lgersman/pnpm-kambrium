@@ -34,13 +34,13 @@
     "@commitlint/config-conventional": "17.2.0",
     "git-cz": "4.9.0",
     "nano-staged": "0.8.0",
-    "eslint": "8.26.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-prettier": "4.2.1",
-    "eslint-plugin-react": "7.31.10",
-    "eslint-plugin-react-hooks": "4.6.0",
-    "eslint-plugin-simple-import-sort": "8.0.0",
-    "prettier": "2.7.1"
+    "eslint": "9.9.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-import": "2.29.1",
+    "eslint-plugin-prettier": "5.2.1",
+    "eslint-plugin-react": "7.35.0",
+    "eslint-plugin-react-hooks": "4.6.2",
+    "eslint-plugin-simple-import-sort": "12.1.1",
+    "prettier": "3.3.3"
   }
 }
