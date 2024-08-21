@@ -8,10 +8,30 @@
     },
   ],
   "settings": {
+    "git.ignoreLimitWarning": true,
+    // show workspace folder in editor tab label
+    "workbench.editor.labelFormat": "short",
     "eslint.lintTask.options": "--config ./node_modules/@pnpmkambrium/core/presets/default/.eslintrc.yaml --ignore-path ./node_modules/@pnpmkambrium/core/presets/default/.lintignore .",
     "stylelint.configFile": "./node_modules/@pnpmkambrium/core/presets/default/.stylelintrc.yml",
     "stylelint.ignorePath": "./node_modules/@pnpmkambrium/core/presets/default/.lintignore",
     "prettier.configPath": "./node_modules/@pnpmkambrium/core/presets/default/.prettierrc.js",
     "prettier.ignorePath": "./node_modules/@pnpmkambrium/core/presets/default/.lintignore",
+    /*
+    "workbench.colorTheme": "Abyss"
+    "json.schemas": [
+      {
+        "fileMatch": ["slice-*.json"],
+        "url": "${workspaceFolder}/docs/jsonschema/slice-content.json"
+      }
+    ]
+    */
+    /*
+      "folder-path-color.folders": [
+      { "path": "../pnpmkambrium", "color": "red" },
+      { "path": "../cm4all-wp-impex", "color": "blue" },
+      { "path": "../cm4all-wordpress", "color": "yellow" },
+      { "path": "../cm4all-thirdparty-plugin-helper", "color": "green" },
+      { "path": "pnpmkambrium-cm4all-wp-impex", "color": "magenta" }
+    ]*/
   },
 }

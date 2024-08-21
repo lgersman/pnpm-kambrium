@@ -1,6 +1,6 @@
 /*#
 #  default prettier configuration
-# 
+#
 # this file is usually referenced in your own top level .prettierrc.js.
 #
 # ```
@@ -26,5 +26,13 @@ module.exports = {
       # },
       */
     { files: ['*.yml'], options: { singleQuote: false } },
+    { files: ['*.php'], options: {
+        // see  https://github.com/prettier/plugin-php?tab=readme-ov-file#visual-studio-code
+        // 8.3 is currently not supported by the plugin
+        phpVersion: '8.2',
+        braceStyle: 'per-cs',
+        parser: 'php',
+     } },
   ],
+  plugins: ['@prettier/plugin-php'],
 };

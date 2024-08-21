@@ -5,6 +5,7 @@
     "ms-azuretools.vscode-docker",
     "formulahendry.vscode-mysql",
     "EditorConfig.EditorConfig",
+    "stylelint.vscode-stylelint",
 
     // taken from https://github.com/antfu/vscode-settings/blob/main/.vscode/extensions.json
     // "usernamehw.errorlens",
