@@ -8,9 +8,6 @@
     },
   ],
   "settings": {
-    "git.ignoreLimitWarning": true,
-    // show workspace folder in editor tab label
-    "workbench.editor.labelFormat": "short",
     "eslint.lintTask.options": "--config ./node_modules/@pnpmkambrium/core/presets/default/.eslintrc.yaml --ignore-path ./node_modules/@pnpmkambrium/core/presets/default/.lintignore .",
     "stylelint.configFile": "./node_modules/@pnpmkambrium/core/presets/default/.stylelintrc.yml",
     "stylelint.ignorePath": "./node_modules/@pnpmkambrium/core/presets/default/.lintignore",
