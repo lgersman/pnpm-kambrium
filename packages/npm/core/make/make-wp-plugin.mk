@@ -36,7 +36,7 @@ packages/wp-plugin/%/build-info: $$(filter-out $$(wildcard $$(@D)/languages/*.po
 > rm -rf $(@D)/{dist,build,build-info}
 > $(PNPM) -r --filter "$$(jq -r '.name | values' $$PACKAGE_JSON)" --if-present run pre-build
 > if jq --exit-status '.scripts | has("build")' $$PACKAGE_JSON >/dev/null; then
->   $(PNPM)-r --filter "$$(jq -r '.name | values' $$PACKAGE_JSON)" run build
+>   $(PNPM) -r --filter "$$(jq -r '.name | values' $$PACKAGE_JSON)" run build
 > else
 >   mkdir -p $(@D)/build/
 >
