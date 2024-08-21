@@ -10,7 +10,7 @@
 #
 # Requires: git, pnpm, wget, fzf >= 0.29.0 (will be installed if not present)
 #
-# Author: Lars Gersmann<lars.gersmann@gmail.com.com>
+# Author: Lars Gersmann<lars.gersmann@gmail.com>
 # Created: 2022-11-16
 # License: See repository LICENSE file.
 
