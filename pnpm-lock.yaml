@@ -51,6 +51,8 @@ importers:
         specifier: 3.3.3
         version: 3.3.3
 
+  packages/docker/easy-coding-standard: {}
+
   packages/docker/fzf: {}
 
   packages/docker/gitlog-per-package: {}

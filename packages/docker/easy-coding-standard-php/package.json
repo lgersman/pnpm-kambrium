@@ -1,0 +1,15 @@
+{
+  "name": "@pnpmkambrium/easy-coding-standard-php",
+  "description": "Docker image providing the most recent PHP easy-coding-standard in a docker image",
+  "version": "1.0.0",
+  "scripts": {},
+  "keywords": [
+    "php",
+    "ecs",
+    "easy-coding-standard"
+  ],
+  "author": {
+    "email": "lars.gersmann@gmail.com",
+    "name": "lars gersmann"
+  }
+}
