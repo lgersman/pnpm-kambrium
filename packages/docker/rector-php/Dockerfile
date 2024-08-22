@@ -1,12 +1,15 @@
 # syntax=docker/dockerfile:1.4
 
 # php version of the docker image
-ARG PHP_VERSION=8.3
+ARG PHP_VERSION
 
 FROM php:${PHP_VERSION}-cli as base
 
+# rector version to embed into docker image
+ARG RECTOR_VERSION=1.0.0
+
 # rector version to use in docker image
-ENV RECTOR_VERSION=1.0.0
+ENV RECTOR_VERSION=${RECTOR_VERSION}
 
 # Fix add-apt-repository is broken with non-UTF-8 locales, see https://github.com/oerdnj/deb.sury.org/issues/56
 ENV LC_ALL C.UTF-8
