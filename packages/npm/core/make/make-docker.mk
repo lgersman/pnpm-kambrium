@@ -65,6 +65,7 @@ packages/docker/%/build-info: $(KAMBRIUM_SUB_PACKAGE_BUILD_INFO_DEPS)
 > $(PNPM) -r --filter "$$(jq -r '.name | values' $$PACKAGE_JSON)" --if-present run pre-build
 # image labels : see https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
 > docker build \
+>   $$(test -f $(@D)/.env && cat $(@D)/.env | sed 's/^/--build-arg /' ||:) \
 >   --progress=plain \
 >   -t $$DOCKER_IMAGE:latest \
 >   -t $$DOCKER_IMAGE:$$PACKAGE_VERSION \
