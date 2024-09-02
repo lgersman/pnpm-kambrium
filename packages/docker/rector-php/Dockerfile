@@ -6,7 +6,7 @@ ARG PHP_VERSION
 FROM php:${PHP_VERSION}-cli as base
 
 # rector version to embed into docker image
-ARG RECTOR_VERSION=1.0.0
+ARG RECTOR_VERSION
 
 # rector version to use in docker image
 ENV RECTOR_VERSION=${RECTOR_VERSION}
