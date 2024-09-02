@@ -28,19 +28,19 @@
   },
   "license": "MIT-2",
   "devDependencies": {
+    "@changesets/cli": "2.27.7",
+    "@commitlint/cli": "19.4.1",
+    "@commitlint/config-conventional": "19.4.1",
     "@pnpmkambrium/core": "workspace:*",
-    "@changesets/cli": "2.27.1",
-    "@commitlint/cli": "17.2.0",
-    "@commitlint/config-conventional": "17.2.0",
-    "git-cz": "4.9.0",
-    "nano-staged": "0.8.0",
-    "eslint": "9.9.0",
+    "eslint": "9.9.1",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-react": "7.35.0",
     "eslint-plugin-react-hooks": "4.6.2",
     "eslint-plugin-simple-import-sort": "12.1.1",
+    "git-cz": "4.9.0",
+    "nano-staged": "0.8.0",
     "prettier": "3.3.3"
   }
 }
