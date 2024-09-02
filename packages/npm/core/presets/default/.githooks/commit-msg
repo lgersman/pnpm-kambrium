@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
-# ensure all dependencies are installed before executing 
-make --silent node_modules/ && pnpm commitlint --edit ${1}
+# ensure all dependencies are installed before executing
+make --silent node_modules/ && \
+pnpm exec commitlint --edit ${1} --config "$(test -f './commitlint.config.js' && echo './commitlint.config.js' || echo './node_modules/@pnpmkambrium/core/presets/default/commitlint.config.js')"
+

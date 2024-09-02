@@ -4,8 +4,10 @@
 # this file is usually referenced in your own top level commitlint.config.js.
 #
 # ```
-# extends:
-#   - "@pnpmkambrium/core/presets/default/commitlint.config.js"
+# const settings = require('@pnpmkambrium/core/presets/default/commitlint.config.js');
+# module.exports = {
+#   ...settings,
+# };
 # ```
 #
 # You can remove it from there depending on your needs.
