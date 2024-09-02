@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
-# ensure all dependencies are installed before executing 
-make --silent node_modules/ && pnpm nano-staged --allow-empty
+# ensure all dependencies are installed before executing
+make --silent node_modules/ && \
+pnpm exec nano-staged \
+  --config "$(test -f './.nano-staged.mjs' && echo './.nano-staged.mjs' || echo './node_modules/@pnpmkambrium/core/presets/default/.nano-staged.mjs')" \
+  --allow-empty
