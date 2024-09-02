@@ -51,7 +51,7 @@ importers:
         specifier: 3.3.3
         version: 3.3.3
 
-  packages/docker/easy-coding-standard: {}
+  packages/docker/easy-coding-standard-php: {}
 
   packages/docker/fzf: {}
 
