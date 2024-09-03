@@ -120,8 +120,8 @@ packages/wp-plugin/%/build-info: $$(filter-out $$(wildcard $$(@D)/languages/*.po
       process \
       $$TARGET_DIR
 >   # update version information in readme.txt and plugin.php down/up-graded plugin variant
->   sed -i "s/^ \* Requires PHP:\([[:space:]]\+\).*/ \* Requires PHP:\1$${TARGET_PHP_VERSION}/" "$(@D)/$$TARGET_DIR/plugin.php"
->   sed -i "s/^Requires PHP:\([[:space:]]\+\).*/Requires PHP:\1$${TARGET_PHP_VERSION}/" "$(@D)/$$TARGET_DIR/readme.txt"
+>   sed -i "s/^ \* Requires PHP:\([[:space:]]*\).*/ \* Requires PHP:\1$${TARGET_PHP_VERSION}/" "$(@D)/$$TARGET_DIR/plugin.php"
+>   sed -i "s/^Requires PHP:\([[:space:]]*\).*/Requires PHP:\1$${TARGET_PHP_VERSION}/" "$(@D)/$$TARGET_DIR/readme.txt"
 > done
 > )
 > # create zip file for each dist/[plugin]-[version]-[php-version] directory
