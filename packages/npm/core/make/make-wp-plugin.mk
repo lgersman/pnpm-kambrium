@@ -37,25 +37,30 @@ packages/wp-plugin/%/build-info: $$(filter-out $$(wildcard $$(@D)/languages/*.po
 > $(PNPM) -r --filter "$$(jq -r '.name | values' $$PACKAGE_JSON)" --if-present run pre-build
 > if jq --exit-status '.scripts | has("build")' $$PACKAGE_JSON >/dev/null; then
 >   $(PNPM) -r --filter "$$(jq -r '.name | values' $$PACKAGE_JSON)" run build
+> elif [[ -d $(@D)/src ]]; then
+>   if [[ -f "$(@D)/cm4all-wp-bundle.json" ]]; then
+>     mkdir -p $(@D)/build/
+>
+>     # transpile src/{*.mjs} files
+>     MJS_FILES="$$(find $(@D)/src -maxdepth 1 -type f -name '*.mjs')"
+>     [[ "$$MJS_FILES" != '' ]] && $(MAKE) $$(echo "$$MJS_FILES" | sed -e 's/src/build/g' -e 's/.mjs/.js/g')
+>     [[ -f $(@D)/src/block.json ]] && cp $(@D)/src/block.json $(@D)/build/block.json
+>   else
+>     # using wp-scrips as default
+>     echo "transpile using wp-scripts from root package"
+>     $(PNPM) -r --filter "$$(jq -r '.name | values' $$PACKAGE_JSON)" exec wp-scripts build $$(find $(@D)/src -maxdepth 1 -type f -name '*.js' -printf "./src/%f ")
+>   fi
 > else
->   mkdir -p $(@D)/build/
+>   kambrium.log_skipped "js/css transpilation skipped - no ./src directory nor 'build' script found in $(@D)"
+> fi
 >
->   # transpile src/{*.js,*.css} files
->   if [[ -d $(@D)/src ]]; then
->     $(MAKE) $$(find $(@D)/src -maxdepth 1 -type f -name '*.mjs' | sed -e 's/src/build/g' -e 's/.mjs/.js/g')
->     [[ -f $(@D)/src/block.json ]] && $(MAKE) $(@D)/build/block.json
->   else
->     kambrium.log_skipped "js/css transpilation skipped - no ./src directory found"
->   fi
->
->   # compile pot -> po -> mo files
->   if [[ -d $(@D)/languages ]]; then
->     $(MAKE) \
-        packages/wp-plugin/$*/languages/$*.pot \
-        $(patsubst %.po,%.mo,$(wildcard packages/wp-plugin/$*/languages/*.po))
->   else
->     kambrium.log_skipped "i18n transpilation skipped - no ./languages directory found"
->   fi
+> # compile pot -> po -> mo files
+> if [[ -d $(@D)/languages ]]; then
+>   $(MAKE) \
+      packages/wp-plugin/$*/languages/$*.pot \
+      $(patsubst %.po,%.mo,$(wildcard packages/wp-plugin/$*/languages/*.po))
+> else
+>   kambrium.log_skipped "i18n transpilation skipped - no ./languages directory found"
 > fi
 >
 > $(PNPM) -r --filter "$$(jq -r '.name | values' $$PACKAGE_JSON)" --if-present run post-build
@@ -225,9 +230,6 @@ packages/wp-plugin/%.po : $$(shell kambrium.get_pot_path $$(@))
 >   msginit -i $< -l $$LOCALE --no-translator -o $@
 > fi
 
-packages/wp-plugin/%/build/block.json: packages/wp-plugin/%/src/block.json
-> cp $< $@
-
 # HELP<<EOF
 # create or update a i18n mo file in a wordpress sub package (`packages/wp-plugin/*`)
 #
@@ -266,9 +268,7 @@ packages/wp-plugin/%.js : $$(subst /build/,/src/,packages/wp-plugin/$$*.mjs)
 >   # => which was needed to have write access to the checkout out repository
 >   [[ "$${GITHUB_ACTIONS:-false}" == "false" ]] && touch -m $@ $(@:.js=.min.js)
 > else
->   # using wp-scrips as default
->   echo "transpile using wp-scripts from root package"
->   $(PNPM) -r --filter "$$(jq -r '.name | values' $$PACKAGE_JSON)" exec wp-scripts build
+>   kambrium.log_skipped "no cm4all-wp-bundle.json found in $(<D)/.."
 > fi
 
 # HELP<<EOF
