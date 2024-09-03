@@ -165,33 +165,33 @@ packages/wp-plugin/%/composer.lock : packages/wp-plugin/$$*/composer.json
 > touch -m $@
 
 # update plugin.php metadata if any of its metadata sources changed
-packages/wp-plugin/%/plugin.php : packages/wp-plugin/%/package.json package.json $$(wildcard .env packages/wp-plugin/$$*/.env)
-> kambrium.get_wp_plugin_metadata $@ &>/dev/null
+packages/wp-plugin/%/plugin.php : packages/wp-plugin/$$*/package.json package.json $$(wildcard .env packages/wp-plugin/$$*/.env)
+> kambrium.get_wp_plugin_metadata $(@D) &>/dev/null
 > # update plugin name
-> sed -i "s/^ \* Plugin Name: .*/ \* Plugin Name: $$PACKAGE_NAME/" $@
+> sed -i "s/^ \* Plugin Name:\([[:space:]]*\).*/ \* Plugin Name:\1$$PACKAGE_NAME/" $@
 > # update plugin uri
 > # we need to escape slashes in the injected variables to not confuse sed (=> $${VAR//\//\\/})
-> sed -i "s/^ \* Plugin URI: .*/ \* Plugin URI: $${HOMEPAGE//\//\\/}/" $@
+> sed -i "s/^ \* Plugin URI:\([[:space:]]*\).*/ \* Plugin URI:\1$${HOMEPAGE//\//\\/}/" $@
 > # update description
-> sed -i "s/^ \* Description: .*/ \* Description: $${DESCRIPTION//\//\\/}/" $@
+> sed -i "s/^ \* Description:\([[:space:]]*\).*/ \* Description:\1$${DESCRIPTION//\//\\/}/" $@
 > # update version
-> sed -i "s/^ \* Version: .*/ \* Version: $$PACKAGE_VERSION/" $@
+> sed -i "s/^ \* Version:\([[:space:]]*\).*/ \* Version:\1$$PACKAGE_VERSION/" $@
 > # update tags
-> sed -i "s/^ \* Tags: .*/ \* Tags: $${TAGS//\//\\/}/" $@
+> sed -i "s/^ \* Tags:\([[:space:]]*\).*/ \* Tags:\1$${TAGS//\//\\/}/" $@
 > # update required php version
-> sed -i "s/^ \* Requires PHP: .*/ \* Requires PHP: $$PHP_VERSION/" $@
+> sed -i "s/^ \* Requires PHP:\([[:space:]]*\).*/ \* Requires PHP:\1$$PHP_VERSION/" $@
 > # update requires at least wordpress version if provided
 > # @TODO: a plugin can be directly started using wp-env (https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/#starting-the-environment)
-> [[ "$$WORDPRESS_VERSION" != "" ]] && sed -i "s/^ \* Requires at least: .*/ \* Requires at least: $$WORDPRESS_VERSION/" $@
+> [[ "$$WORDPRESS_VERSION" != "" ]] && sed -i "s/^ \* Requires at least: .*/ \* Requires at least:\1$$WORDPRESS_VERSION/" $@
 > # update author
-> [[ "$$AUTHORS" != "" ]] && sed -i "s/^ \* Author: .*/ \* Author: $${AUTHORS//\//\\/}/" $@
+> [[ "$$AUTHORS" != "" ]] && sed -i "s/^ \* Author:\([[:space:]]*\).*/ \* Author:\1$${AUTHORS//\//\\/}/" $@
 > # update author uri
 > VENDOR=$${VENDOR:-}
-> [[ "$$VENDOR" != "" ]] && sed -i "s/^ \* Author URI: .*/ \* Author URI: $${VENDOR//\//\\/}/" $@
+> [[ "$$VENDOR" != "" ]] && sed -i "s/^ \* Author URI:\([[:space:]]*\).*/ \* Author URI:\1$${VENDOR//\//\\/}/" $@
 > # update license
-> [[ "$$LICENSE" != "" ]] && sed -i "s/^ \* License: .*/ \* License: $$LICENSE/" $@
+> [[ "$$LICENSE" != "" ]] && sed -i "s/^ \* License:\([[:space:]]*\).*/ \* License:\1$$LICENSE/" $@
 > # update license uri
-> [[ "$$LICENSE_URI" != "" ]] && sed -i "s/^ \* License URI: .*/ \* License URI: $${LICENSE_URI//\//\\/}/" $@
+> [[ "$$LICENSE_URI" != "" ]] && sed -i "s/^ \* License URI:\([[:space:]]*\).*/ \* License URI:\1$${LICENSE_URI//\//\\/}/" $@
 > kambrium.log_done "$(@D) : updated wordpress header in plugin.php"
 
 # dynamic definition of dockerized wp-cli
