@@ -267,8 +267,8 @@ packages/wp-plugin/%.js : $$(subst /build/,/src/,packages/wp-plugin/$$*.mjs)
 >   [[ "$${GITHUB_ACTIONS:-false}" == "false" ]] && touch -m $@ $(@:.js=.min.js)
 > else
 >   # using wp-scrips as default
->   echo "[@TODO:] js/css transpilation of wp-plugin ressources using wp-scripts is not jet supported"
->   exit 1
+>   echo "transpile using wp-scripts from root package"
+>   $(PNPM) -r --filter "$$(jq -r '.name | values' $$PACKAGE_JSON)" exec wp-scripts build
 > fi
 
 # HELP<<EOF
