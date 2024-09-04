@@ -1,7 +1,7 @@
 {
   "name": "@pnpmkambrium/gum",
   "description": "a distroless image providing the most recent gum version in an small docker image (~30MB)",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scripts": {},
   "keywords": [
     "gum",
