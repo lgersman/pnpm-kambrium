@@ -7,7 +7,8 @@
   },
   "files": [
     "presets/",
-    "make/"
+    "make/",
+    "bin/"
   ],
   "author": {
     "email": "lars.gersmann@gmail.com",
