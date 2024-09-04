@@ -1,7 +1,7 @@
 {
   "name": "@pnpmkambrium/glow",
   "description": "a distroless image providing the most recent glow version in an docker image under 30MB",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {},
   "keywords": [
     "glow",
