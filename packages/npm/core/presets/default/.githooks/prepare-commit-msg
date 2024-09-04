@@ -3,4 +3,4 @@
 make --silent node_modules/ && exec < /dev/tty && \
   PNPM_WORKSPACE_PACKAGES=$( \
     pnpm list --filter "*/*" --json | jq -c  '[.[].name | select( . != null )] | sort' \
-  ) pnpm git cz --hook ||:
+  ) pnpm exec git-cz --hook ||:
