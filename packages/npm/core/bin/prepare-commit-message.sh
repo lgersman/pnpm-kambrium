@@ -15,7 +15,8 @@ function gum() {
 # shopt -s lastpipe
 # gum choose --header "Select the type of change that you're committing:" "a" "b" | read COMMIT_TYPE
 
-gum choose --header "Select the type of change that you're committing:" "a" "b"
-gum choose --header "next option" "xxx" "yyy"
+echo "returned $(gum choose --header "Select the type of change that you're committing:" "a" "b" >/dev/tty)"
+# gum choose --header "Select the type of change that you're committing:" "a" "b"
+# gum choose --header "next option" "xxx" "yyy"
 
-echo "COMMIT_TYPE=$COMMIT_TYPE"
+# echo "COMMIT_TYPE=$COMMIT_TYPE"
