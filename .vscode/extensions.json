@@ -6,7 +6,7 @@
     "formulahendry.vscode-mysql",
     "EditorConfig.EditorConfig",
     "stylelint.vscode-stylelint",
-    "mads-hartmann.bash-ide-vscode"
+    "mads-hartmann.bash-ide-vscode",
 
     // taken from https://github.com/antfu/vscode-settings/blob/main/.vscode/extensions.json
     // "usernamehw.errorlens",
