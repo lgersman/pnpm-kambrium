@@ -10,6 +10,8 @@
 
     // taken from https://github.com/antfu/vscode-settings/blob/main/.vscode/extensions.json
     // "usernamehw.errorlens",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "johnbillion.vscode-wordpress-hooks",
+    "bmewburn.vscode-intelephense-client"
   ]
 }
